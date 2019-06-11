@@ -6,6 +6,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
+/**
+ * Implementing of the AbstractList class as a unidirectional list
+ * As a pointer there is only the head of the array.
+ * The connection between the elements exists only in one direction from the current to the next.
+ * @param <T>
+ */
 public class OneWayList<T> extends AbstractList<T> {
     private Node head;
     private int count;
