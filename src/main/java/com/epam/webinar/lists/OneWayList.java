@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
  */
 public class OneWayList<T> extends AbstractList<T> {
     private Node head;
-    private int count;
+    private int size;
 
     /**
      * Returns an iterator over elements of type {@code T}.
@@ -114,12 +114,12 @@ public class OneWayList<T> extends AbstractList<T> {
      *                                       is not supported by this list
      */
     public void clear() {
-        count = 0;
+        size = 0;
         head = null;
     }
 
     public T set(int index, T obj) {
-        if (index < 0 || index > count - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node setNode = getInternal(index);
         T result = setNode.getObj();
         setNode.setObj(obj);
@@ -127,7 +127,7 @@ public class OneWayList<T> extends AbstractList<T> {
     }
 
     public T remove(int index) {
-        if (index < 0 || index > count - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node removeNode;
         if (index == 0) {
             removeNode = head;
@@ -137,28 +137,28 @@ public class OneWayList<T> extends AbstractList<T> {
             removeNode = node.getNext();
             node.setNext(removeNode.getNext());
         }
-        count--;
+        size--;
         return removeNode.getObj();
     }
 
     public void add(int index, T obj) {
-        if (index < 0 || index > count) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node addNode = new Node(obj);
 
         if (index == 0) {
             addNode.setNext(head);
             head = addNode;
-            count++;
+            size++;
         } else {
             Node node = getInternal(index - 1);
             addNode.setNext(node.getNext());
             node.setNext(addNode);
-            count++;
+            size++;
         }
     }
 
     public T get(int index) {
-        if (index < 0 || index > count - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node node = getInternal(index);
         return node.getObj();
     }
@@ -172,11 +172,11 @@ public class OneWayList<T> extends AbstractList<T> {
     }
 
     public int size() {
-        return count;
+        return size;
     }
 
     public OneWayList() {
-        count = 0;
+        size = 0;
         head = null;
     }
 
@@ -185,20 +185,20 @@ public class OneWayList<T> extends AbstractList<T> {
         Node addNode = new Node(obj);
         if (head == null) {
             head = addNode;
-            count = 1;
+            size = 1;
         } else {
             Node node = head;
             while (node.hasNext()) node = node.getNext();
             node.setNext(addNode);
-            count++;
+            size++;
         }
 
         return true;
     }
 
     public T[] toArray() {
-        if (count == 0) return null;
-        T[] array = (T[]) new Object[count];
+        if (size == 0) return null;
+        T[] array = (T[]) new Object[size];
         int c = 1;
         Node node = head;
         array[0] = head.getObj();
