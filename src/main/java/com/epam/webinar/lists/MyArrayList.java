@@ -4,6 +4,19 @@ import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
+/**
+ * Implementing of the AbstractList class as a dynamic data array
+ *
+ * The array increases its size as it fills.
+ * Quick access to any element of the array
+ * When initializing a new array, memory is allocated for 10 cells.
+ * If you know that the array is scheduled to a different size - the size
+ * of the allocated memory can be set during initialization:
+ * List<Object> list = new MyArrayList<>(1000)
+ * Similarity of implementation of ArrayList
+ * @param <T>
+ */
 public class MyArrayList<T> extends AbstractList<T> {
     private final int START_SIZE = 10;
 
