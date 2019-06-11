@@ -6,10 +6,18 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
+/**
+ * Implementing of the AbstractList class as a bidirectional list
+ * The head and tail of the array are used as pointers.
+ * Each element of the array indicates the previous and next element
+ * Similarity of implementation of LinkedList
+ * @param <T>
+ */
 public class TwoWayList<T> extends AbstractList<T> {
     private Node head;
     private Node tail;
-    private int count;
+    private int size;
 
 
     /**
@@ -27,14 +35,14 @@ public class TwoWayList<T> extends AbstractList<T> {
      *                                       is not supported by this list
      */
     public void clear() {
-        count = 0;
+        size = 0;
         head = null;
         tail = null;
     }
 
     //done
     public T set(int index, T obj) {
-        if (index < 0 || index > count - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
 
         Node oldNode = getInternal(index);
         T result = oldNode.getObj();
@@ -45,32 +53,32 @@ public class TwoWayList<T> extends AbstractList<T> {
 
     //done
     public T remove(int index) {
-        if (index < 0 || index > count - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node removeNode = getInternal(index);
         if (index == 0) {
             head = head.getNext();
             head.setBefore(null);
-        } else if (index == count - 1) {
+        } else if (index == size - 1) {
             tail = tail.getBefore();
             tail.setNext(null);
         } else {
             removeNode.getBefore().setNext(removeNode.getNext());
             removeNode.getNext().setBefore(removeNode.getBefore());
         }
-        count--;
+        size--;
         return removeNode.getObj();
     }
 
     //done
     public void add(int index, T obj) {
-        if (index < 0 || index > count) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node newNode = new Node(obj);
         if (index == 0) {
             head.setBefore(newNode);
             newNode.setNext(head);
             head = newNode;
 
-        } else if (index == count) {
+        } else if (index == size) {
             tail.setNext(newNode);
             newNode.setBefore(tail);
             tail = newNode;
@@ -82,11 +90,11 @@ public class TwoWayList<T> extends AbstractList<T> {
             oldNode.getBefore().setNext(newNode);
             oldNode.setBefore(newNode);
         }
-        count++;
+        size++;
     }
 
     public T get(int index) {
-        if (index < 0 || index > count - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+        if (index < 0 || index > size - 1) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         Node node = getInternal(index);
         return node.getObj();
     }
@@ -103,7 +111,7 @@ public class TwoWayList<T> extends AbstractList<T> {
     private Node getNodeByIndexFromTail(int index) {
         Node node = tail;
 
-        for (int i = count - 1; i > index; i--) {
+        for (int i = size - 1; i > index; i--) {
             node = node.getBefore();
         }
         return node;
@@ -112,7 +120,7 @@ public class TwoWayList<T> extends AbstractList<T> {
 
     private Node getInternal(int index) {
         Node node;
-        if (index <= count / 2) node = getNodeByIndexFromHead(index);
+        if (index <= size / 2) node = getNodeByIndexFromHead(index);
         else node = getNodeByIndexFromTail(index);
         return node;
     }
@@ -201,12 +209,12 @@ public class TwoWayList<T> extends AbstractList<T> {
 
     //done
     public int size() {
-        return count;
+        return size;
     }
 
     //done
     public TwoWayList() {
-        count = 0;
+        size = 0;
         head = null;
         tail = null;
     }
@@ -217,12 +225,12 @@ public class TwoWayList<T> extends AbstractList<T> {
         if (head == null) {
             head = addNode;
             tail = head;
-            count = 1;
+            size = 1;
         } else {
             addNode.setBefore(tail);
             tail.setNext(addNode);
             tail = addNode;
-            count++;
+            size++;
         }
 
         return true;
@@ -230,8 +238,8 @@ public class TwoWayList<T> extends AbstractList<T> {
 
     //done
     public T[] toArray() {
-        if (count == 0) return null;
-        T[] array = (T[]) new Object[count];
+        if (size == 0) return null;
+        T[] array = (T[]) new Object[size];
         int c = 1;
         Node node = head;
         array[0] = head.getObj();
